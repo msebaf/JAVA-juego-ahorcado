@@ -1,0 +1,151 @@
+package ahorcado;
+
+import java.util.Random;
+import java.util.Scanner;
+
+/**
+ *
+ * @author mseba
+ */
+public class Juego {
+
+    Scanner sc = new Scanner(System.in);
+    public String letrasYaElegidas = "";
+    public String nombreJugador;
+    private final int intentos = 7;
+    private final String[] palabrasFacil = {"CASA", "AUTO", "PERRO", "GATO", "BANANA", "ANANA", "HOLA", "SOLO", "SALA", "PELO", "CIELO", "COLOR", "CALOR", "MESA", "PLATO", "SAPO"};
+    private final String[] palabrasIntermedio = {"PRINCESA", "PRINCIPE", "COMIDA", "JUGUETE", "VIDRIERIA", "JUGUETERIA", "CONSENTIDO", "ALGORITMO", "SECUAZ", "COMPLICADO", "ARITMETICA", "SOLILOQUIO", "CATASTROFE"};
+    private final String[] palabrasDificil = {"ESTERNOCLEIDOMASTOIDEO", "OTORRINOLARINGOLOGO", "IDIOSINCRACIA", "DESOXIRRIBONUCLEICO", "PARALELOPIPEDO", "OVOVIVIPARO", "CALEIDOSCOPIO", "ELECTROENCEFALOGRAFISTA", "HIPOPOTOMONSTROSESQUIPEDALIOFOBIA", "PNEUMONOULTRAMICROSCOPICSSILICOVOLCANOCONIOSIS"};
+
+    public Juego(String nombreJugador) {
+        this.nombreJugador = nombreJugador;
+    }
+
+    public int getIntentos() {
+        return intentos;
+    }
+
+    public String[] getPalabrasFacil() {
+        return palabrasFacil;
+    }
+
+    public String[] getPalabrasIntermedio() {
+        return palabrasIntermedio;
+    }
+
+    public String[] getPalabrasDificil() {
+        return palabrasDificil;
+    }
+
+    public void jugar() {
+        int intentosL = this.intentos;
+
+        String[] palabrasDelJuego = this.elegirDificulta();
+        Random ran = new Random();
+        String usarPalabra = palabrasDelJuego[ran.nextInt(palabrasDelJuego.length) + 0];
+        String palabraJugador = " ";
+        for (int i = 0; i < usarPalabra.length(); i++) {
+            palabraJugador += "_ ";
+
+        }
+        this.comprobarLetra(palabraJugador, usarPalabra, intentosL, 0);
+
+    }
+
+    public String[] elegirDificulta() {
+        String eleccion;
+        String[] palabras = {};
+        System.out.println("Hola "+ this.nombreJugador + ". Elegi una dificultad: Facil[F], Media[M], Dificil[D]");
+        eleccion = sc.next().toUpperCase();
+        switch (eleccion) {
+            case "F":
+                palabras = this.palabrasFacil;
+                break;
+            case "M":
+                palabras = this.palabrasIntermedio;
+                break;
+            case "D":
+                palabras = this.palabrasDificil;
+                break;
+            default:
+                System.out.println("La eleccion no es valida. Intentalo nuevamente");
+                 palabras = this.elegirDificulta();
+
+        }
+        return palabras;
+    }
+
+    public void comprobarLetra(String palabraJugador, String usarPalabra, int intentosL,int contador) {
+      
+        String palabraControl;
+        
+        int contadorDeLetras = contador;
+        int controladorDeContador = contador;
+        String salida;
+        System.out.println(palabraJugador + "      Te faltan " + ((palabraJugador.length() / 2) - contadorDeLetras) + " letras.  Tienes " + intentosL + " intenos");
+        
+       
+        System.out.println("Elije una Letra");
+        String letra = sc.next();
+        letra = letra.toUpperCase();
+        
+        if(letrasYaElegidas.contains(letra)){
+            System.out.println("");
+            System.out.println("Ya elegiste esa Letra");
+            System.out.println("Las letras ue ya has elegido son: " + letrasYaElegidas);
+            System.out.println("");
+            this.comprobarLetra(palabraJugador, usarPalabra, intentosL, contadorDeLetras);}
+        else{
+        this.letrasYaElegidas += letra +", ";
+            System.out.println("");
+        System.out.println("Las letras que ya has elegido son: " + letrasYaElegidas);
+            System.out.println("");
+        for (int i = 0; i < usarPalabra.length(); i++) {
+            if (usarPalabra.charAt(i) == letra.charAt(0)) {
+                contadorDeLetras+=1;
+               
+                salida = palabraJugador.substring(0, (i * 2 + 1)) + letra.charAt(0) + palabraJugador.substring(i * 2 + 2, palabraJugador.length());
+                palabraJugador = salida;
+            }
+
+        }
+        
+        palabraControl = palabraJugador.replace(" ", "");
+        if (controladorDeContador==contadorDeLetras) {
+            intentosL -= 1;
+            System.out.println("INCORRECTO");
+        } else {
+            System.out.println("CORRECTO");
+        }
+       
+        if (intentosL == 0) {
+            System.out.println("La palabra era: "+usarPalabra);
+            System.out.println("PERDISTE!");
+           this.volverAjugar();
+        } else if (palabraControl.equals(usarPalabra)) {
+            System.out.println(palabraJugador);
+            System.out.println("GANASTE!");
+           this.volverAjugar();
+        } else {
+            this.comprobarLetra(palabraJugador, usarPalabra, intentosL, contadorDeLetras);
+        }}
+    }
+    
+    public void volverAjugar(){
+    
+        System.out.println("¿Queres jugar de nuevo? S/N");
+        String decicion = sc.next().toUpperCase();
+        switch(decicion){
+            case "S":
+                  this.letrasYaElegidas="";
+                   this.jugar();
+                   
+            case "N":
+                break;
+            default:
+                System.out.println("No es una decision valida");
+                this.volverAjugar();
+        }
+    }
+
+}

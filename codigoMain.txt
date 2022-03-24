@@ -1,0 +1,24 @@
+ */
+package ahorcado;
+
+import java.util.Scanner;
+
+/**
+ *
+ * @author mseba
+ */
+public class Ahorcado {
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) {
+        // TODO code application logic here
+        Scanner sc = new Scanner(System.in);
+        System.out.println("¿Cual es tu nombre?");
+        String nombre = sc.nextLine();
+        Juego jg = new Juego(nombre);
+        jg.jugar();
+    }
+    
+}
