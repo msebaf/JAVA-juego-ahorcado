@@ -10,8 +10,8 @@ import java.util.Scanner;
 public class Juego {
 
     Scanner sc = new Scanner(System.in);
-    public String letrasYaElegidas = "";
-    public String nombreJugador;
+    private String letrasYaElegidas = "";
+    private String nombreJugador;
     private final int intentos = 7;
     private final String[] palabrasFacil = {"CASA", "AUTO", "PERRO", "GATO", "BANANA", "ANANA", "HOLA", "SOLO", "SALA", "PELO", "CIELO", "COLOR", "CALOR", "MESA", "PLATO", "SAPO"};
     private final String[] palabrasIntermedio = {"PRINCESA", "PRINCIPE", "COMIDA", "JUGUETE", "VIDRIERIA", "JUGUETERIA", "CONSENTIDO", "ALGORITMO", "SECUAZ", "COMPLICADO", "ARITMETICA", "SOLILOQUIO", "CATASTROFE"};
@@ -85,21 +85,30 @@ public class Juego {
         System.out.println(palabraJugador + "      Te faltan " + ((palabraJugador.length() / 2) - contadorDeLetras) + " letras.  Tienes " + intentosL + " intenos");
         
        
-        System.out.println("Elije una Letra");
+        System.out.println("Elije una Letra o intenta adivinar la palabra");
         String letra = sc.next();
         letra = letra.toUpperCase();
         
         if(letrasYaElegidas.contains(letra)){
             System.out.println("");
-            System.out.println("Ya elegiste esa Letra");
-            System.out.println("Las letras ue ya has elegido son: " + letrasYaElegidas);
+            System.out.println("Ya elegiste esa Letra o palabra");
+            System.out.println("Las letras y palabras que ya has elegido son: " + letrasYaElegidas);
             System.out.println("");
             this.comprobarLetra(palabraJugador, usarPalabra, intentosL, contadorDeLetras);}
         else{
         this.letrasYaElegidas += letra +", ";
             System.out.println("");
+             if(letra.length()>1){
+                if(letra.equals(usarPalabra)){
+                    System.out.println("Ganaste! La palabra es " + usarPalabra);
+                    System.out.println("");
+                    this.volverAjugar();
+                }
+            
         System.out.println("Las letras que ya has elegido son: " + letrasYaElegidas);
             System.out.println("");
+           
+            }
         for (int i = 0; i < usarPalabra.length(); i++) {
             if (usarPalabra.charAt(i) == letra.charAt(0)) {
                 contadorDeLetras+=1;
